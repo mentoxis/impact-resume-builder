@@ -5,20 +5,26 @@ description: Use when building a new, impact-driven resume from a person's exist
 
 # Impact Resume Builder
 
-Create a new resume grounded in the candidate's real work. Keep the source resume and all candidate data outside this skill's directory.
+Create a new, evidence-based resume from a candidate's existing resume. Keep candidate files and personal details outside this reusable skill directory.
 
-## Collect the facts
+## Gather evidence
 
-Ask for the existing resume before drafting. If there is no resume, request career history, education, skills, and contact details instead. Read the full source, then ask for the target role and any job description when they would affect emphasis. Do not ask for facts already clear in the source.
+Ask for the existing resume before drafting. If none exists, ask for career history, education, skills, and contact details. Read the full source. Ask for the target role, seniority, and job description when they affect emphasis. Do not repeat questions already answered in the source.
 
-Identify the most useful gaps in each role: ownership, problem, action, beneficiaries, scale, and result. Ask focused questions in manageable groups, especially where a responsibility could become an achievement. Request numbers only when the candidate can verify them; useful evidence includes before and after measures, volume, adoption, revenue, time saved, reliability, and team scope. Ask follow-up questions when an answer remains ambiguous. If a number is unavailable, write a concrete qualitative outcome. Never invent achievements, metrics, employers, dates, credentials, or technologies. Flag unresolved claims for confirmation before finalizing.
+For each role, find the important gaps: ownership, problem, action, beneficiaries, scale, and result. Ask focused questions in manageable groups, especially where a duty could become an achievement. Request numbers only when the candidate can verify them: before and after measures, volume, adoption, revenue, time saved, reliability, or team scope. Follow up on ambiguous answers. Use a concrete qualitative outcome when no reliable metric exists. Never invent achievements, metrics, employers, dates, credentials, or technologies. Mark unresolved claims for confirmation before finalizing.
 
-## Write the resume
+## Write for impact and ATS parsing
 
-Select experience relevant to the target role. Write concise bullets that connect the candidate's action to its context and outcome. Lead with the strongest supported impact, and preserve the meaning of the source. Avoid generic duties, inflated language, and keyword stuffing. Use ATS-friendly headings, a clear reading order, and a simple single-column layout by default. Choose page count based on experience and the target market, rather than forcing a fixed length.
+Select relevant experience and write concise bullets that connect action, context, and supported outcome. Lead with the strongest evidence. Avoid generic duties, inflated language, and keyword stuffing.
 
-## Create and verify files
+Start from [assets/resume-template.tex](assets/resume-template.tex), replacing every placeholder with verified candidate information. Use its single-column layout with straightforward headings and reading order. Default to 0.65in margins and exactly two pages unless the candidate explicitly requests another length. Keep body and contact text readable with comfortable line spacing. Use a fixed-width label column so skills values align. Prevent automatic line-end word hyphenation, while preserving explicit compound hyphens. Disable font ligatures so extracted ATS text keeps ordinary letter sequences.
 
-Ask for an output format if it is unclear and materially affects the work; otherwise provide a PDF and editable source. For the default PDF workflow, run `python3 <this-skill>/scripts/setup_dependencies.py --venv <work-dir>/.venv` before generating the resume. This installs ReportLab for PDF creation and PyMuPDF for rendering and text extraction in an isolated environment. Use that environment's Python for the work. If installation is blocked, explain the specific blocker and request the needed access; do not claim the PDF is ready.
+Bold only short achievement spans showing measurable business impact, performance change, scale, time or cost savings, or leadership scope. Keep technologies, dates, action verbs, responsibilities, evaluation criteria, and qualitative claims in regular weight. Never change wording merely to create a bold span.
 
-Extract text from the finished PDF and compare names, dates, headings, and achievement claims with the approved draft. Render and inspect every page for clipping, overlap, alignment, and legibility. Deliver the editable source and final PDF, along with any facts still awaiting confirmation. Never publish the candidate's resume or personal details as part of this skill.
+## Build and verify
+
+Run `python3 <this-skill>/scripts/setup_dependencies.py` before building. It checks for Tectonic and Poppler tools and installs missing packages through Homebrew when available. On another platform, install the missing tools with its package manager and rerun the check. If installation is blocked, report the specific blocker.
+
+Save each revision in `versions/<resume family>/vN/`, choosing the next number within that family. Include the editable `.tex` source, compiled PDF, and `VERSION.md` recording family, version, key change, and email variant. Do not modify or remove earlier numbered versions. Create only the primary-email variant unless another is requested.
+
+Compile twice with Tectonic and inspect its logs for errors or layout warnings. Use Poppler `pdfinfo` to check the page count and links, `pdftotext` to verify reading order, facts, and unbroken keywords, and `pdffonts` to inspect embedded fonts. Render every page with `pdftoppm` and visually check clipping, overlap, alignment, and legibility. Check extracted text for ligature characters. Deliver the `.tex` source and PDF with any facts awaiting confirmation. Never publish candidate data with this skill.

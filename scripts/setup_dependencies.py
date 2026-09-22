@@ -1,31 +1,34 @@
 #!/usr/bin/env python3
-"""Install the default resume PDF dependencies in a chosen virtual environment."""
+"""Install or verify the tools used to build and inspect LaTeX resumes."""
 
-import argparse
+import shutil
 import subprocess
-import sys
-import venv
-from pathlib import Path
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--venv", required=True, type=Path, help="Virtual environment path")
-    args = parser.parse_args()
+    packages = []
+    if shutil.which("tectonic") is None:
+        packages.append("tectonic")
+    poppler_tools = ("pdfinfo", "pdftotext", "pdftoppm", "pdffonts")
+    if any(shutil.which(tool) is None for tool in poppler_tools):
+        packages.append("poppler")
 
-    if sys.version_info < (3, 10):
-        parser.error("Python 3.10 or newer is required")
+    if packages:
+        brew = shutil.which("brew")
+        if brew is None:
+            raise SystemExit(
+                "Missing tools: " + ", ".join(packages) + ". Install Tectonic and "
+                "Poppler with your platform's package manager, then rerun this script. "
+                "Tectonic installation: "
+                "https://tectonic-typesetting.github.io/book/latest/installation/"
+            )
+        subprocess.run([brew, "install", *packages], check=True)
 
-    target = args.venv.expanduser().resolve()
-    venv.EnvBuilder(with_pip=True).create(target)
-    python = target / ("Scripts/python.exe" if sys.platform == "win32" else "bin/python")
-
-    subprocess.run(
-        [str(python), "-m", "pip", "install", "reportlab>=4,<5", "pymupdf>=1.25,<2"],
-        check=True,
-    )
-    subprocess.run([str(python), "-c", "import reportlab, pymupdf"], check=True)
-    print(f"Resume PDF dependencies ready in {target}")
+    required = ("tectonic", *poppler_tools)
+    missing = [tool for tool in required if shutil.which(tool) is None]
+    if missing:
+        raise SystemExit("Required commands still missing: " + ", ".join(missing))
+    print("Resume tools ready: " + ", ".join(required))
 
 
 if __name__ == "__main__":

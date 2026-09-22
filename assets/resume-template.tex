@@ -1,0 +1,73 @@
+\documentclass[10pt,letterpaper]{article}
+
+\usepackage[margin=0.65in]{geometry}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+\else
+  \usepackage{fontspec}
+  \defaultfontfeatures{Ligatures=NoCommon}
+\fi
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{microtype}
+\ifPDFTeX
+  \DisableLigatures{encoding = *, family = *}
+\fi
+\hyphenpenalty=10000
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\emergencystretch=2em
+\widowpenalty=10000
+\clubpenalty=10000
+
+\hypersetup{
+  hidelinks,
+  pdfauthor={Candidate Name},
+  pdftitle={Candidate Name Resume}
+}
+
+\titleformat{\section}{\large\bfseries\uppercase}{}{0em}{}[\titlerule]
+\titlespacing*{\section}{0pt}{10pt}{5pt}
+\titleformat{\subsection}{\normalsize\bfseries}{}{0em}{}
+\titlespacing*{\subsection}{0pt}{7pt}{2pt}
+\setlist[itemize]{leftmargin=1.2em, itemsep=2pt, topsep=3pt, parsep=0pt}
+
+\newcommand{\jobheading}[4]{%
+  \needspace{5\baselineskip}%
+  \subsection*{#1 \normalfont{--- #2}\hfill\normalfont{#3 -- #4}}%
+}
+\newcommand{\skillrow}[2]{%
+  \noindent\hangindent=13.8em\hangafter=1%
+  \makebox[13.5em][l]{\small\bfseries #1}\hspace{0.3em}#2\par%
+}
+
+\begin{document}
+\raggedright
+
+\begin{center}
+  {\Huge\bfseries Candidate Name}\\[4pt]
+  {\large Target Role}\\[6pt]
+  \small Contact details and verified links
+\end{center}
+
+\section*{Summary}
+Replace with a concise, evidence-based summary relevant to the target role.
+
+\section*{Experience}
+\jobheading{Job Title}{Organization}{Start Date}{End Date}
+\begin{itemize}
+  \item Replace with an action, context, and verified outcome.
+\end{itemize}
+
+\section*{Skills}
+\skillrow{Category}{Verified skills}
+
+\section*{Education}
+Verified degree, institution, and dates.
+
+\end{document}
