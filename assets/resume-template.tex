@@ -17,7 +17,6 @@
 \usepackage{enumitem}
 \usepackage{hyperref}
 \usepackage{titlesec}
-\usepackage{needspace}
 \usepackage{microtype}
 \ifPDFTeX
   \DisableLigatures{encoding = *, family = *}
@@ -44,7 +43,6 @@
 \setlist[itemize]{leftmargin=1.2em, itemsep=2pt, topsep=3pt, parsep=0pt}
 
 \newcommand{\jobheading}[4]{%
-  \needspace{5\baselineskip}%
   \subsection*{#1 \normalfont{--- #2}\hfill\normalfont{#3 -- #4}}%
 }
 \newcommand{\skillrow}[2]{%

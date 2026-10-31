@@ -2,7 +2,7 @@
 name: impact-resume-builder
 description: Use when building a new, impact-driven resume from a person's existing resume file or from career details pasted as text.
 metadata:
-  version: "2.0"
+  version: "2.1"
 ---
 
 # Impact Resume Builder
@@ -26,20 +26,29 @@ Treat both modes the same after intake. Read the full source. For text input, ex
 
 For each role, find the important gaps: ownership, problem, action, beneficiaries, scale, and result. Ask focused questions in manageable groups, especially where a duty could become an achievement. Request numbers only when the candidate can verify them: before and after measures, volume, adoption, revenue, time saved, reliability, or team scope. Follow up on ambiguous answers. Use a concrete qualitative outcome when no reliable metric exists. Never invent achievements, metrics, employers, dates, credentials, or technologies. Mark unresolved claims for confirmation before finalizing.
 
-## Trim education for experienced candidates
+## Calculate experience
 
-Calculate total professional experience from the role dates in the source. Count full-time and contract roles, merge overlapping periods, count a current role up to today, and exclude internships and academic projects. If missing dates or an unclear employment type could change whether the total is more than 3 years, ask before applying this rule.
+Calculate total professional experience from the role dates in the source. Count full-time and contract roles, merge overlapping periods, count a current role up to today, and exclude internships and academic projects. If missing dates or an unclear employment type could change which side of the 3-year or 4-year thresholds the total falls on, ask before applying the rules below. Record the calculated experience in `VERSION.md`.
+
+## Trim education for experienced candidates
 
 When total experience is more than 3 years:
 
 - Remove 10th grade (secondary school, SSC, or equivalent) and 12th grade (higher secondary, HSC, or equivalent) entries from the Education section. Keep the highest degree and any later degrees or certifications.
 - Remove academic scores from education entries, including percentages, CGPA, and GPA. Keep the degree, institution, and dates.
 - Tell the candidate in one short message, sent with your evidence questions and before drafting, that these details will be left out because recruiters do not require them for a candidate with more than 3 years of experience. Include their calculated experience. Keep the details only if the candidate explicitly asks.
-- Record the calculated experience and removed education details in `VERSION.md`.
+- Record the removed education details in `VERSION.md`.
 
 This rule applies only to education. Keep verified percentages that describe work impact, such as latency reduced by 40%, in experience bullets.
 
 When total experience is 3 years or less, keep education details as provided.
+
+## Choose the page length
+
+- When total experience is less than 4 years, recommend a one-page resume. Tell the candidate in the same message as other intake notes, with their calculated experience, and build one page unless they explicitly ask for two.
+- When total experience is 4 years or more, build two pages unless the candidate explicitly asks for another length.
+
+Record the chosen page count and the reason in `VERSION.md`.
 
 ## Write for impact and ATS parsing
 
@@ -57,7 +66,9 @@ Start from [assets/resume-template.tex](assets/resume-template.tex), copy it int
 - Prevent automatic line-end word hyphenation, but preserve explicit compound hyphens.
 - Disable common font ligatures so extracted ATS text contains ordinary letter sequences.
 - Keep job headings with the first bullet when space permits. Do not allow clipped, overlapping, or orphaned content.
-- Produce exactly two pages unless the candidate explicitly requests another length. Balance content across both pages; do not shrink text or margins to force the page count.
+- Produce the page count chosen under "Choose the page length". Do not shrink text, margins, or template spacing to force it; select and tighten content instead.
+- Leave no blank space. Every page, including the first and the last, must be filled to within 0.75in of the bottom margin, with no gaps between sections beyond the template spacing. Do not use `\vfill`, `\newpage`, `\needspace`, or manual `\vspace` to move content; the template's section headings already stay with the line that follows them.
+- When a page runs short, add verified, relevant content first: stronger bullets for recent roles, projects, certifications, or skills from the evidence. Ask the candidate for more when the evidence runs out. Never fill space with generic duties, repetition, or invented content. If verified content still cannot fill the pages, drop to fewer pages and tell the candidate. When content overflows, cut the weakest bullets.
 
 Bold only short achievement spans showing measurable business impact, performance change, scale, time or cost savings, or leadership scope. Keep technologies, dates, action verbs, responsibilities, evaluation criteria, and qualitative claims in regular weight. Never change wording merely to create a bold span.
 
@@ -67,4 +78,4 @@ Run `python3 <this-skill>/scripts/setup_dependencies.py` before building. It che
 
 Save each revision in `versions/<resume family>/vN/`, choosing the next number within that family. Include the editable `.tex` source, compiled PDF, and `VERSION.md` recording family, version, key change, and email variant. Use ATS-friendly resume filenames such as `First_Last_Resume.pdf` and matching `First_Last_Resume.tex`; add a short role suffix only when needed to distinguish variants. Use plain ASCII letters and underscores, with no spaces or version numbers in the resume filenames. Keep version numbers in the directory and `VERSION.md`. Do not modify or remove earlier numbered versions. Create only the primary-email variant unless another is requested.
 
-Compile twice with Tectonic and inspect its logs for errors or layout warnings. Use Poppler `pdfinfo` to check the page count, paper size, and links; use `pdftotext -layout` to verify reading order, facts, contact details, and unbroken keywords; and use `pdffonts` to confirm that Latin Modern fonts are embedded with Unicode mappings. Render every page with `pdftoppm` and visually check clipping, overlap, alignment, page balance, readable spacing, and legibility. Check extracted text for ligature characters and confirm that important ATS keywords are intact. When the experience rule applies, confirm that the extracted Education section contains no 10th or 12th grade entries and no percentages, CGPA, or GPA. Deliver the `.tex` source and PDF with any facts awaiting confirmation and a note on any removed education details. Never publish candidate data with this skill.
+Compile twice with Tectonic and inspect its logs for errors or layout warnings. Use Poppler `pdfinfo` to check the page count, paper size, and links; use `pdftotext -layout` to verify reading order, facts, contact details, and unbroken keywords; and use `pdffonts` to confirm that Latin Modern fonts are embedded with Unicode mappings. Run `python3 <this-skill>/scripts/check_page_fill.py <resume>.pdf` and fix every page it reports as FAIL, including the first page; a section or job pushed to the next page must not leave a gap behind it. Render every page with `pdftoppm` and visually check clipping, overlap, alignment, page balance, blank space, readable spacing, and legibility. Check extracted text for ligature characters and confirm that important ATS keywords are intact. When the experience rule applies, confirm that the extracted Education section contains no 10th or 12th grade entries and no percentages, CGPA, or GPA. Deliver the `.tex` source and PDF with any facts awaiting confirmation and a note on any removed education details. Never publish candidate data with this skill.

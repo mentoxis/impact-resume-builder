@@ -7,10 +7,17 @@ A reusable [Agent Skill](https://agentskills.io/) for Codex, Claude Code, and Op
 1. Lets the candidate choose how to start: paste their full career content and experience as text, or share an existing resume file.
 2. Asks focused questions about ownership, the problem solved, actions, scale, and outcomes. It asks for numbers only when the candidate can verify them.
 3. For candidates with more than 3 years of professional experience, removes 10th and 12th grade entries and academic scores (percentage, CGPA, GPA) from Education, and tells the candidate why.
-4. Writes concise, relevant achievement bullets and builds a single-column LaTeX resume designed for straightforward ATS parsing.
-5. Compiles the PDF with Tectonic and checks page count, extracted text, fonts, links, and rendered pages with Poppler tools.
+4. Recommends a one-page resume for candidates with less than 4 years of experience and builds two pages otherwise.
+5. Writes concise, relevant achievement bullets and builds a single-column LaTeX resume designed for straightforward ATS parsing, with every page filled and no blank gaps.
+6. Compiles the PDF with Tectonic, checks page count, extracted text, fonts, links, and rendered pages with Poppler tools, and runs `scripts/check_page_fill.py` to catch blank space.
 
 The output is an editable `.tex` file and a PDF, organized in numbered versions. Unconfirmed facts are flagged for review.
+
+## What's new in v2.1
+
+- **No blank space:** every page, including the first, must be filled to within 0.75in of the bottom margin. `scripts/check_page_fill.py` fails on any page that leaves more. Short pages are filled with verified content; if there isn't enough, the resume drops to fewer pages.
+- **Template fix:** removed `\needspace` from job headings. It could push a whole job to the next page and leave several inches blank on page 1.
+- **Page length by experience:** less than 4 years of experience gets a recommended one-page resume; 4 years or more gets two pages.
 
 ## What's new in v2
 
