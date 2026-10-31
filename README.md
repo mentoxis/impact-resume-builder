@@ -1,15 +1,22 @@
 # Impact Resume Builder
 
-A reusable [Agent Skill](https://agentskills.io/) for Codex, Claude Code, and OpenCode. It creates an impact-driven, ATS-friendly resume from an existing resume or career notes. It asks for missing evidence before writing and never invents metrics, roles, dates, or credentials. Candidate resumes and personal details stay outside this repository.
+A reusable [Agent Skill](https://agentskills.io/) for Codex, Claude Code, and OpenCode. It creates an impact-driven, ATS-friendly resume from an existing resume or from career details pasted as text. It asks for missing evidence before writing and never invents metrics, roles, dates, or credentials. Candidate resumes and personal details stay outside this repository.
 
 ## What it does
 
-1. Reads the candidate's existing resume. If there is none, gathers career history, education, skills, and contact details.
+1. Lets the candidate choose how to start: paste their full career content and experience as text, or share an existing resume file.
 2. Asks focused questions about ownership, the problem solved, actions, scale, and outcomes. It asks for numbers only when the candidate can verify them.
-3. Writes concise, relevant achievement bullets and builds a single-column LaTeX resume designed for straightforward ATS parsing.
-4. Compiles the PDF with Tectonic and checks page count, extracted text, fonts, links, and rendered pages with Poppler tools.
+3. For candidates with more than 3 years of professional experience, removes 10th and 12th grade entries and academic scores (percentage, CGPA, GPA) from Education, and tells the candidate why.
+4. Writes concise, relevant achievement bullets and builds a single-column LaTeX resume designed for straightforward ATS parsing.
+5. Compiles the PDF with Tectonic and checks page count, extracted text, fonts, links, and rendered pages with Poppler tools.
 
 The output is an editable `.tex` file and a PDF, organized in numbered versions. Unconfirmed facts are flagged for review.
+
+## What's new in v2
+
+- **Two input modes:** paste career content as text, or share an existing resume.
+- **Education trimming:** with more than 3 years of experience, 10th and 12th grade details and academic scores are removed from Education, and the candidate is told these details are not required at that level. Work-impact percentages in experience bullets are kept.
+- **ATS-friendly filenames:** outputs use names such as `First_Last_Resume.pdf`, with version numbers kept in the directory.
 
 ## Supported agents
 
@@ -53,8 +60,14 @@ The script checks for Tectonic and Poppler (`pdfinfo`, `pdftotext`, `pdftoppm`, 
 
 ## Use
 
-Attach an existing resume or provide career notes, then ask your agent:
+Choose one input mode, then ask your agent.
+
+With an existing resume attached:
 
 > Use the impact-resume-builder skill to create a resume for a senior software engineer role. Read my existing resume, ask about unclear achievements and missing impact, then produce the LaTeX source and PDF.
+
+With career details as text:
+
+> Use the impact-resume-builder skill to create a resume for a senior software engineer role. Here is my full experience: roles, employers, dates, what I worked on, results, education, skills, and contact details. Ask about missing impact, then produce the LaTeX source and PDF.
 
 The skill instructions are in [SKILL.md](SKILL.md), and the editable starting point is [assets/resume-template.tex](assets/resume-template.tex).
