@@ -40,19 +40,19 @@ The skill uses the portable `SKILL.md` format. Install the same repository in th
 ### Codex
 
 ```bash
-git clone https://github.com/santoshyadav979439/impact-resume-builder.git ~/.agents/skills/impact-resume-builder
+git clone https://github.com/mentoxis/impact-resume-builder.git ~/.agents/skills/impact-resume-builder
 ```
 
 ### Claude Code
 
 ```bash
-git clone https://github.com/santoshyadav979439/impact-resume-builder.git ~/.claude/skills/impact-resume-builder
+git clone https://github.com/mentoxis/impact-resume-builder.git ~/.claude/skills/impact-resume-builder
 ```
 
 ### OpenCode
 
 ```bash
-git clone https://github.com/santoshyadav979439/impact-resume-builder.git ~/.config/opencode/skills/impact-resume-builder
+git clone https://github.com/mentoxis/impact-resume-builder.git ~/.config/opencode/skills/impact-resume-builder
 ```
 
 Restart the agent after installation so it can discover the skill.
@@ -78,3 +78,33 @@ With career details as text:
 > Use the impact-resume-builder skill to create a resume for a senior software engineer role. Here is my full experience: roles, employers, dates, what I worked on, results, education, skills, and contact details. Ask about missing impact, then produce the LaTeX source and PDF.
 
 The skill instructions are in [SKILL.md](SKILL.md), and the editable starting point is [assets/resume-template.tex](assets/resume-template.tex).
+
+## How to contribute
+
+Contributions are welcome: new resume rules, template fixes, support for more agents, better checks, and documentation.
+
+### Repository layout
+
+| Path | Purpose |
+|---|---|
+| [SKILL.md](SKILL.md) | The skill instructions the agent follows. Most behavior changes go here. |
+| [assets/resume-template.tex](assets/resume-template.tex) | Single-column, ATS-friendly LaTeX template. |
+| [scripts/setup_dependencies.py](scripts/setup_dependencies.py) | Checks and installs Tectonic and Poppler. |
+| [scripts/check_page_fill.py](scripts/check_page_fill.py) | Fails when a rendered page leaves blank space. |
+
+### Workflow
+
+1. Open an [issue](https://github.com/mentoxis/impact-resume-builder/issues) describing the bug or idea before large changes, so the approach can be agreed first.
+2. Fork the repository and create a branch from `main`, for example `fix/page-fill-threshold` or `feat/cover-letter-mode`.
+3. Install the skill from your fork into your agent's skill directory (see [Install](#install)) and run `python3 scripts/setup_dependencies.py`.
+4. Make the change, then test it end to end: ask your agent to build a resume with a **sample or anonymized profile**, compile the PDF, and run `python3 scripts/check_page_fill.py` on it.
+5. Commit with [Conventional Commits](https://www.conventionalcommits.org/) prefixes (`feat:`, `fix:`, `docs:`), matching the existing history.
+6. Open a pull request against `main`. Describe what changed, why, which agent you tested with (Codex, Claude Code, or OpenCode), and attach a screenshot of the generated PDF when the layout changes.
+
+### Ground rules
+
+- **No personal data.** Never commit real resumes, names, contact details, or generated PDFs. Use fictional or anonymized examples.
+- **No invented facts.** Changes must keep the core rule: the skill never fabricates metrics, roles, dates, or credentials.
+- **ATS first.** Keep the template single-column and text-extractable; avoid tables, icons, and multi-column layouts in the resume body.
+- **Keep it portable.** `SKILL.md` must stay valid for every supported agent; agent-specific notes belong in the README.
+- **Document user-visible changes** in the README's "What's new" section.
